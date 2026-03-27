@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0">
+<title>令和8年度 現況届 入力</title>
+<style>
+:root {
+  --navy: #1b3a6b;
+  --navy-light: #e8eef7;
+  --navy-mid: #3a5f9e;
+  --red: #b83030;
+  --green: #2a6e3f;
+  --green-light: #eaf4ee;
+  --bg: #f0ede8;
+  --card: #ffffff;
+  --border: #c8cdd6;
+  --text: #1a1a1a;
+  --sub: #5a6070;
+  --r: 14px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Hiragino Kaku Gothic ProN','Yu Gothic','Meiryo',sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 17px;
+  padding-bottom: 60px;
+}
+
+/* ヘッダー */
+.hdr {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+  color: #fff;
+  padding: 22px 16px 18px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hdr::before {
+  content: '';
+  position: absolute;
+  top: -30px; right: -30px;
+  width: 120px; height: 120px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 50%;
+}
+.hdr h1 { font-size: 19px; font-weight: 800; letter-spacing: 0.08em; line-height: 1.5; position: relative; }
+.hdr .org { font-size: 13px; opacity: 0.75; margin-top: 4px; position: relative; }
+
+/* プログレス */
+.prog-wrap { background: var(--navy); padding: 0 16px 16px; }
+.prog-bar { background: rgba(255,255,255,0.2); border-radius: 999px; height: 6px; overflow: hidden; }
+.prog-fill { background: #fff; height: 100%; border-radius: 999px; transition: width 0.4s ease; }
+.prog-label { color: rgba(255,255,255,0.85); font-size: 13px; display: flex; justify-content: space-between; margin-top: 5px; }
+
+/* タブナビ */
+.tabs {
+  display: flex;
+  background: #fff;
+  border-bottom: 2px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  flex: 0 0 auto;
+  padding: 11px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--sub);
+  border: none;
+  border-bottom: 3px solid transparent;
+  background: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.tab.active { color: var(--navy); border-bottom-color: var(--navy); }
+.tab.done { color: var(--green); }
+.tab.done::before { content: '✓ '; }
+
+/* コンテンツ */
+.wrap { max-width: 580px; margin: 0 auto; padding: 16px; }
+
+.sec { display: none; animation: fadeUp 0.25s ease both; }
+.sec.active { display: block; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.sec-ttl {
+  font-size: 15px; font-weight: 800;
+  color: var(--navy);
+  background: var(--navy-light);
+  border-left: 5px solid var(--navy);
+  padding: 10px 14px;
+  border-radius: 0 10px 10px 0;
+  margin-bottom: 16px;
+}
+
+/* カード */
+.card {
+  background: var(--card);
+  border-radius: var(--r);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  padding: 20px 16px;
+  margin-bottom: 16px;
+}
+
+/* フィールド */
+.f { margin-bottom: 20px; }
+.f:last-child { margin-bottom: 0; }
+label {
+  display: block;
+  font-size: 14px; font-weight: 700;
+  color: var(--sub);
+  margin-bottom: 6px;
+}
+label .req { color: var(--red); font-size: 12px; margin-left: 4px; }
+label .hint { display: block; font-weight: 400; font-size: 12px; color: #999; margin-top: 1px; }
+
+input[type=text], input[type=tel], input[type=email],
+input[type=number], input[type=date] {
+  width: 100%;
+  font-size: 20px;
+  padding: 13px 12px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: #fafafa;
+  color: var(--text);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+  font-family: inherit;
+}
+input:focus {
+  outline: none;
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(27,58,107,0.12);
+  background: #fff;
+}
+input.ok { border-color: var(--green); background: var(--green-light); }
+
+.row2 { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center; }
+.row2 .sep { font-size: 18px; color: var(--sub); text-align: center; }
+
+/* 役員 */
+.off-list { display: flex; flex-direction: column; gap: 12px; }
+.off-card {
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 14px 12px;
+  background: #fafbfd;
+  position: relative;
+}
+.off-card .off-no {
+  position: absolute; top: -11px; left: 12px;
+  background: var(--navy); color: #fff;
+  font-size: 11px; font-weight: 800;
+  padding: 2px 10px; border-radius: 999px;
+}
+.off-card input { margin-bottom: 8px; font-size: 18px; padding: 11px 10px; }
+.off-card input:last-child { margin-bottom: 0; }
+
+.btn-add {
+  width: 100%;
+  padding: 14px;
+  background: var(--navy-light);
+  color: var(--navy);
+  border: 2px dashed var(--navy-mid);
+  border-radius: 10px;
+  font-size: 16px; font-weight: 700;
+  cursor: pointer; margin-top: 8px;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+.btn-add:active { background: #d0dcf0; }
+
+.btn-del {
+  float: right; background: none; border: none;
+  color: #aaa; font-size: 13px; cursor: pointer;
+  padding: 2px 4px;
+}
+.btn-del:active { color: var(--red); }
+
+/* ナビ */
+.navs { display: flex; gap: 10px; margin-top: 24px; }
+.btn-back {
+  flex: 1; padding: 15px;
+  background: #fff; border: 2px solid var(--border);
+  border-radius: 10px; font-size: 16px; font-weight: 700;
+  color: var(--sub); cursor: pointer; font-family: inherit;
+}
+.btn-next {
+  flex: 2; padding: 15px;
+  background: var(--navy); border: none;
+  border-radius: 10px; font-size: 16px; font-weight: 700;
+  color: #fff; cursor: pointer; font-family: inherit;
+  box-shadow: 0 4px 14px rgba(27,58,107,0.28);
+  transition: background 0.2s;
+}
+.btn-next:active { background: #0f2850; }
+
+/* 確認 */
+.conf-tbl { width: 100%; border-collapse: collapse; font-size: 16px; }
+.conf-tbl th {
+  background: var(--navy-light); color: var(--navy);
+  font-weight: 700; padding: 10px; text-align: left;
+  width: 40%; border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.conf-tbl td {
+  padding: 10px; border-bottom: 1px solid #eee;
+  word-break: break-all;
+}
+.empty { color: #ccc; }
+.off-conf {
+  background: var(--navy-light); border-radius: 8px;
+  padding: 10px 12px; margin-bottom: 8px; font-size: 15px;
+}
+.off-conf .role { font-weight: 800; color: var(--navy); font-size: 14px; }
+
+/* 送信ボタン */
+.btn-send {
+  width: 100%; padding: 18px;
+  background: var(--green); border: none;
+  border-radius: 12px; font-size: 18px; font-weight: 800;
+  color: #fff; cursor: pointer; font-family: inherit;
+  box-shadow: 0 4px 14px rgba(42,110,63,0.28);
+  transition: background 0.2s;
+  margin-top: 8px;
+}
+.btn-send:disabled { background: #aaa; box-shadow: none; cursor: not-allowed; }
+.btn-edit {
+  width: 100%; padding: 14px;
+  background: #fff; border: 2px solid var(--navy);
+  border-radius: 12px; font-size: 16px; font-weight: 700;
+  color: var(--navy); cursor: pointer; font-family: inherit;
+  margin-top: 10px;
+}
+
+/* 送信中 */
+.spinner {
+  display: inline-block; width: 20px; height: 20px;
+  border: 3px solid rgba(255,255,255,0.4);
+  border-top-color: #fff; border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  vertical-align: middle; margin-right: 8px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* 完了 */
+.done-wrap {
+  text-align: center; padding: 40px 16px;
+  animation: fadeUp 0.4s ease;
+}
+.done-wrap .icon { font-size: 72px; margin-bottom: 20px; }
+.done-wrap h2 { font-size: 22px; font-weight: 800; color: var(--navy); margin-bottom: 10px; }
+.done-wrap p { font-size: 16px; color: var(--sub); line-height: 1.8; }
+.done-wrap .id-box {
+  background: var(--navy-light); border-radius: 10px;
+  padding: 14px; margin: 16px 0; font-size: 14px;
+  color: var(--navy); font-weight: 700;
+}
+
+/* エラー */
+.err-msg {
+  background: #fff0f0; border: 1px solid #ffaaaa;
+  border-radius: 8px; padding: 12px; color: var(--red);
+  font-size: 14px; margin-top: 8px; display: none;
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>令和8年度<br>自治会町内会現況届</h1>
+  <div class="org">豊田連合町内会自治会会長 宛</div>
+</div>
+<div class="prog-wrap">
+  <div class="prog-bar"><div class="prog-fill" id="pf"></div></div>
+  <div class="prog-label"><span id="plabel">ステップ 1 / 4</span><span id="pname">基本情報</span></div>
+</div>
+
+<div class="tabs" id="tabBar">
+  <button class="tab active" onclick="goTo(0)">①基本情報</button>
+  <button class="tab" onclick="goTo(1)">②会長</button>
+  <button class="tab" onclick="goTo(2)">③役員</button>
+  <button class="tab" onclick="goTo(3)">④確認・送信</button>
+</div>
+
+<div class="wrap">
+
+  <!-- STEP 0: 基本情報 -->
+  <div class="sec active" id="s0">
+    <div class="sec-ttl">① 基本情報・数値</div>
+    <div class="card">
+      <div class="f">
+        <label>自治会町内会名 <span class="req">※必須</span></label>
+        <input type="text" id="chonaikai" placeholder="例：○○町内会" oninput="chk(this)">
+      </div>
+      <div class="f">
+        <label>役員任期
+          <span class="hint">開始日 〜 終了日</span>
+        </label>
+        <div class="row2">
+          <input type="date" id="term_s" oninput="chk(this)">
+          <span class="sep">〜</span>
+          <input type="date" id="term_e" oninput="chk(this)">
+        </div>
+      </div>
+      <div class="f">
+        <label>届出日</label>
+        <input type="date" id="rep_date" oninput="chk(this)">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="f">
+        <label>③ 班数（回覧チラシ等必要枚数）</label>
+        <input type="number" id="han" placeholder="例：12" min="0" oninput="chk(this)">
+      </div>
+      <div class="f">
+        <label>④ 掲示板数（ポスター等必要枚数）</label>
+        <input type="number" id="keijiban" placeholder="例：5" min="0" oninput="chk(this)">
+      </div>
+      <div class="f">
+        <label>⑥ 加入世帯数
+          <span class="hint">4月1日現在</span>
+        </label>
+        <input type="number" id="setai" placeholder="例：150" min="0" oninput="chk(this)">
+      </div>
+      <div class="f">
+        <label>⑦ 自治会費（年額・円）</label>
+        <input type="number" id="fee" placeholder="例：3600" min="0" oninput="chk(this)">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sec-ttl" style="margin-bottom:14px">⑤ 会館・集会所</div>
+      <div class="f">
+        <label>名称</label>
+        <input type="text" id="hall_n" placeholder="例：○○町内会館" oninput="chk(this)">
+      </div>
+      <div class="f">
+        <label>所在地</label>
+        <input type="text" id="hall_a" placeholder="横浜市..." oninput="chk(this)">
+      </div>
+      <div class="f">
+        <label>TEL</label>
+        <input type="tel" id="hall_t" placeholder="045-000-0000" oninput="chk(this)">
+      </div>
+    </div>
+
+    <div class="navs">
+      <button class="btn-next" onclick="next(0)">次へ（会長情報）→</button>
+    </div>
+  </div>
+
+  <!-- STEP 1: 会長情報 -->
+  <div class="sec" id="s1">
+    <div class="sec-ttl">② 会長情報</div>
+    <div class="card">
+      <div class="f">
+        <label>ふりがな</label>
+        <input type="text" id="p_kana" placeholder="やまだ たろう" oninput="chk(this)">
+      </div>
+      <div class="f">
+        <label>氏名 <span class="req">※必須</span></label>
+        <input type="text" id="p_name" placeholder="山田 太郎" oninput="chk(this)">
+      </div>
+      <div class="f">
+        <label>郵便番号</label>
+        <input type="text" id="p_zip" placeholder="〒 000-0000" oninput="chk(this)">
+      </div>
+      <div class="f">
+        <label>住所</label>
+        <input type="text" id="p_addr" placeholder="横浜市..." oninput="chk(this)">
+      </div>
+    </div>
+    <div class="card">
+      <div class="f">
+        <label>TEL</label>
+        <input type="tel" id="p_tel" placeholder="045-000-0000" oninput="chk(this)">
+      </div>
+      <div class="f">
+        <label>FAX</label>
+        <input type="tel" id="p_fax" placeholder="045-000-0000" oninput="chk(this)">
+      </div>
+      <div class="f">
+        <label>携帯</label>
+        <input type="tel" id="p_mob" placeholder="090-0000-0000" oninput="chk(this)">
+      </div>
+      <div class="f">
+        <label>Eメール</label>
+        <input type="email" id="p_email" placeholder="example@mail.com" oninput="chk(this)">
+      </div>
+    </div>
+    <div class="navs">
+      <button class="btn-back" onclick="prev(1)">← 戻る</button>
+      <button class="btn-next" onclick="next(1)">次へ（役員）→</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: 役員 -->
+  <div class="sec" id="s2">
+    <div class="sec-ttl">役員一覧</div>
+    <div class="card">
+      <p style="font-size:13px;color:#888;margin-bottom:14px;">
+        ※氏名は必須。連絡先は区役所事業の目的以外に使用されません。
+      </p>
+      <div class="off-list" id="offList"></div>
+      <button class="btn-add" onclick="addOff()">＋ 役員を追加する</button>
+    </div>
+    <div class="navs">
+      <button class="btn-back" onclick="prev(2)">← 戻る</button>
+      <button class="btn-next" onclick="next(2)">確認画面へ →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: 確認・送信 -->
+  <div class="sec" id="s3">
+    <div class="sec-ttl">④ 確認・送信</div>
+    <div class="card">
+      <table class="conf-tbl" id="confTbl"></table>
+    </div>
+    <div class="card" id="offConf"></div>
+    <div class="err-msg" id="errMsg"></div>
+    <button class="btn-send" id="sendBtn" onclick="submitData()">📤 この内容で送信する</button>
+    <button class="btn-edit" onclick="goTo(0)">✏️ 修正する</button>
+  </div>
+
+  <!-- 完了 -->
+  <div class="sec" id="s4">
+    <div class="done-wrap">
+      <div class="icon">✅</div>
+      <h2>送信が完了しました</h2>
+      <p>ご入力ありがとうございました。<br>連合会へ現況届のデータが届きました。</p>
+      <div class="id-box" id="doneId"></div>
+      <p style="font-size:13px;color:#aaa;margin-top:16px;">このページを閉じて構いません。</p>
+    </div>
+  </div>
+
+</div><!-- /wrap -->
+
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  // ========================================================
+  // 🔧 ここに Firebase の設定を貼り付けてください
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  // ========================================================
+  const firebaseConfig = {
+    apiKey: "AIzaSyALYKt38-_lon3ns9TEibctRiJ7vovX2A4",
+    authDomain: "genkyo-todoke.firebaseapp.com",
+    projectId: "genkyo-todoke",
+    storageBucket: "genkyo-todoke.firebasestorage.app",
+    messagingSenderId: "767199162038",
+    appId: "1:767199162038:web:f45d2a22881bed121f0017",
+    measurementId: "G-RTN8PLD0KX"
+  };
+  // ========================================================
+
+  const app = initializeApp(firebaseConfig);
+  const db  = getFirestore(app);
+
+  // グローバルに公開
+  window._db = db;
+  window._addDoc = addDoc;
+  window._collection = collection;
+  window._serverTimestamp = serverTimestamp;
+</script>
+
+<script>
+// ===================== UI管理 =====================
+let cur = 0;
+let offCnt = 0;
+const STEP_NAMES = ['基本情報','会長情報','役員一覧','確認・送信'];
+
+window.onload = () => {
+  // 今日の日付
+  const t = new Date();
+  const ymd = `${t.getFullYear()}-${pad(t.getMonth()+1)}-${pad(t.getDate())}`;
+  document.getElementById('rep_date').value = ymd;
+  // 初期役員3行
+  addOff(); addOff(); addOff();
+  updProg();
+};
+
+function pad(n){ return String(n).padStart(2,'0'); }
+
+function chk(el){
+  el.classList.toggle('ok', el.value.trim().length > 0);
+}
+
+function updProg(){
+  const pct = ((cur+1)/4)*100;
+  document.getElementById('pf').style.width = pct+'%';
+  document.getElementById('plabel').textContent = `ステップ ${cur+1} / 4`;
+  document.getElementById('pname').textContent = STEP_NAMES[cur];
+  document.querySelectorAll('.tab').forEach((t,i)=>{
+    t.classList.remove('active','done');
+    if(i===cur) t.classList.add('active');
+    else if(i<cur) t.classList.add('done');
+  });
+}
+
+function goTo(n){
+  document.getElementById('s'+cur).classList.remove('active');
+  cur = n;
+  document.getElementById('s'+cur).classList.add('active');
+  updProg();
+  if(n===3) buildConf();
+  window.scrollTo(0,0);
+}
+
+function next(n){
+  if(n===0 && !gv('chonaikai')){ alert('自治会町内会名を入力してください'); return; }
+  if(n===1 && !gv('p_name')){ alert('会長の氏名を入力してください'); return; }
+  goTo(n+1);
+}
+function prev(n){ goTo(n-1); }
+
+// ===================== 役員 =====================
+function addOff(){
+  offCnt++;
+  const n = offCnt;
+  const d = document.createElement('div');
+  d.className = 'off-card';
+  d.id = 'oc'+n;
+  d.innerHTML = `
+    <span class="off-no">役員 ${n}</span>
+    <button class="btn-del" onclick="delOff(${n})">✕ 削除</button>
+    <br style="clear:both">
+    <input type="text"  id="or${n}" placeholder="役職（会長・副会長・会計 など）" oninput="chk(this)" style="margin-top:10px">
+    <input type="text"  id="ok${n}" placeholder="ふりがな" oninput="chk(this)">
+    <input type="text"  id="on${n}" placeholder="氏名（必須）" oninput="chk(this)">
+    <input type="tel"   id="ot${n}" placeholder="日中連絡先 電話番号" oninput="chk(this)">
+    <input type="email" id="oe${n}" placeholder="Eメール（任意）" oninput="chk(this)">
+  `;
+  document.getElementById('offList').appendChild(d);
+}
+function delOff(n){ const e=document.getElementById('oc'+n); if(e) e.remove(); }
+
+// ===================== 確認画面 =====================
+function gv(id){ return (document.getElementById(id)||{}).value?.trim()||''; }
+function fmtD(s){
+  if(!s) return '';
+  const [y,m,d]=s.split('-');
+  return `令和${y-2018}年${+m}月${+d}日`;
+}
+function em(v){ return v ? v : '<span class="empty">（未入力）</span>'; }
+
+function buildConf(){
+  const rows = [
+    ['届出日',            fmtD(gv('rep_date'))],
+    ['役員任期',          gv('term_s')&&gv('term_e') ? fmtD(gv('term_s'))+'〜'+fmtD(gv('term_e')) : ''],
+    ['① 自治会町内会名',  gv('chonaikai')],
+    ['② 会長 氏名',       gv('p_name')],
+    ['　ふりがな',         gv('p_kana')],
+    ['　住所',             gv('p_addr')],
+    ['　郵便番号',         gv('p_zip')],
+    ['　TEL',              gv('p_tel')],
+    ['　FAX',              gv('p_fax')],
+    ['　携帯',             gv('p_mob')],
+    ['　Eメール',          gv('p_email')],
+    ['③ 班数',             gv('han')  ? gv('han') +'枚' : ''],
+    ['④ 掲示板数',         gv('keijiban') ? gv('keijiban')+'枚' : ''],
+    ['⑤ 会館名称',         gv('hall_n')],
+    ['　所在地',            gv('hall_a')],
+    ['　TEL',               gv('hall_t')],
+    ['⑥ 加入世帯数',       gv('setai') ? gv('setai')+'世帯' : ''],
+    ['⑦ 自治会費（年額）', gv('fee')   ? (+gv('fee')).toLocaleString()+'円' : ''],
+  ];
+  document.getElementById('confTbl').innerHTML =
+    rows.map(([l,v])=>`<tr><th>${l}</th><td>${em(v)}</td></tr>`).join('');
+
+  // 役員
+  const cards = document.querySelectorAll('.off-card');
+  let html = '<div style="font-weight:800;color:#555;font-size:14px;margin-bottom:10px;">【役員一覧】</div>';
+  let cnt = 0;
+  cards.forEach(c=>{
+    const id = c.id.replace('oc','');
+    const nm = gv('on'+id); if(!nm) return;
+    cnt++;
+    html += `<div class="off-conf">
+      <div class="role">${gv('or'+id)||'（役職未入力）'}</div>
+      <div>${nm}${gv('ok'+id) ? '　（'+gv('ok'+id)+'）':''}</div>
+      ${gv('ot'+id)?'<div>📞 '+gv('ot'+id)+'</div>':''}
+      ${gv('oe'+id)?'<div>✉ '+gv('oe'+id)+'</div>':''}
+    </div>`;
+  });
+  if(!cnt) html += '<div class="empty" style="font-size:14px;">役員が入力されていません</div>';
+  document.getElementById('offConf').innerHTML = html;
+}
+
+// ===================== Firestore送信 =====================
+async function submitData(){
+  const btn = document.getElementById('sendBtn');
+  const err = document.getElementById('errMsg');
+  err.style.display = 'none';
+
+  if(!window._db){ err.textContent='Firebase が設定されていません。設定手順書を確認してください。'; err.style.display='block'; return; }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>送信中...';
+
+  // 役員配列
+  const officers = [];
+  document.querySelectorAll('.off-card').forEach(c=>{
+    const id = c.id.replace('oc','');
+    const nm = gv('on'+id); if(!nm) return;
+    officers.push({
+      role:  gv('or'+id),
+      kana:  gv('ok'+id),
+      name:  nm,
+      tel:   gv('ot'+id),
+      email: gv('oe'+id),
+    });
+  });
+
+  const data = {
+    chonaikai:   gv('chonaikai'),
+    term_start:  gv('term_s'),
+    term_end:    gv('term_e'),
+    report_date: gv('rep_date'),
+    han:         gv('han')  ? +gv('han')  : null,
+    keijiban:    gv('keijiban') ? +gv('keijiban') : null,
+    setai:       gv('setai') ? +gv('setai') : null,
+    fee:         gv('fee')  ? +gv('fee')  : null,
+    hall_name:   gv('hall_n'),
+    hall_addr:   gv('hall_a'),
+    hall_tel:    gv('hall_t'),
+    president: {
+      kana:    gv('p_kana'),
+      name:    gv('p_name'),
+      zip:     gv('p_zip'),
+      address: gv('p_addr'),
+      tel:     gv('p_tel'),
+      fax:     gv('p_fax'),
+      mobile:  gv('p_mob'),
+      email:   gv('p_email'),
+    },
+    officers,
+    submittedAt: window._serverTimestamp(),
+  };
+
+  try {
+    const ref = await window._addDoc(window._collection(window._db, 'genkyo'), data);
+    // 完了画面
+    document.getElementById('s3').classList.remove('active');
+    cur = 4;
+    document.getElementById('s4').classList.add('active');
+    document.getElementById('doneId').textContent = '受付ID：' + ref.id;
+    window.scrollTo(0,0);
+  } catch(e) {
+    console.error(e);
+    err.textContent = '送信に失敗しました。通信環境を確認して再度お試しください。\n(' + e.message + ')';
+    err.style.display = 'block';
+    btn.disabled = false;
+    btn.innerHTML = '📤 この内容で送信する';
+  }
+}
+</script>
+</body>
+</html>

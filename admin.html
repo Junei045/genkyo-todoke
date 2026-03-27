@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>現況届 管理画面｜豊田連合町内会</title>
+<style>
+:root {
+  --navy: #1b3a6b;
+  --navy-light: #e8eef7;
+  --navy-mid: #3a5f9e;
+  --red: #b83030;
+  --green: #2a6e3f;
+  --amber: #b06000;
+  --bg: #f0ede8;
+  --card: #fff;
+  --border: #c8cdd6;
+  --text: #1a1a1a;
+  --sub: #5a6070;
+  --r: 12px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Hiragino Kaku Gothic ProN','Yu Gothic','Meiryo',sans-serif;
+  background: var(--bg); color: var(--text); font-size: 15px;
+  min-height: 100vh;
+}
+
+/* ===== ログイン画面 ===== */
+#loginScreen {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 100vh; padding: 20px;
+}
+.login-card {
+  background: var(--card); border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  padding: 40px 32px; width: 100%; max-width: 360px;
+  text-align: center;
+}
+.login-card .logo { font-size: 40px; margin-bottom: 12px; }
+.login-card h1 { font-size: 18px; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+.login-card p { font-size: 13px; color: var(--sub); margin-bottom: 24px; }
+.login-card input {
+  width: 100%; padding: 14px 12px; font-size: 18px;
+  border: 2px solid var(--border); border-radius: 10px;
+  font-family: inherit; margin-bottom: 12px; letter-spacing: 0.2em;
+  text-align: center;
+}
+.login-card input:focus { outline: none; border-color: var(--navy); }
+.btn-login {
+  width: 100%; padding: 14px; background: var(--navy);
+  color: #fff; border: none; border-radius: 10px;
+  font-size: 16px; font-weight: 800; cursor: pointer;
+  font-family: inherit;
+}
+.login-err { color: var(--red); font-size: 13px; margin-top: 8px; display: none; }
+
+/* ===== メイン画面 ===== */
+#mainScreen { display: none; }
+
+.top-bar {
+  background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+  color: #fff; padding: 14px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+}
+.top-bar h1 { font-size: 16px; font-weight: 800; }
+.top-bar .meta { font-size: 13px; opacity: 0.8; }
+
+.toolbar {
+  background: #fff; border-bottom: 2px solid var(--border);
+  padding: 12px 16px; display: flex; gap: 10px;
+  flex-wrap: wrap; align-items: center;
+}
+.view-tabs { display: flex; gap: 4px; }
+.vtab {
+  padding: 8px 16px; border-radius: 8px; border: 2px solid var(--border);
+  background: #fff; font-size: 14px; font-weight: 700; cursor: pointer;
+  color: var(--sub); font-family: inherit; transition: all 0.15s;
+}
+.vtab.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+.btn-reload {
+  padding: 8px 14px; border: 2px solid var(--border);
+  border-radius: 8px; background: #fff; color: var(--sub);
+  font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit;
+}
+.btn-print-main {
+  margin-left: auto; padding: 8px 16px;
+  background: var(--green); color: #fff; border: none;
+  border-radius: 8px; font-size: 14px; font-weight: 800;
+  cursor: pointer; font-family: inherit;
+  box-shadow: 0 2px 8px rgba(42,110,63,0.2);
+}
+
+.main-wrap { max-width: 1100px; margin: 0 auto; padding: 20px 16px; }
+
+/* サマリカード */
+.summary-row {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px; margin-bottom: 20px;
+}
+.sum-card {
+  background: var(--card); border-radius: var(--r);
+  padding: 16px 14px; text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+.sum-card .lbl { font-size: 12px; color: var(--sub); font-weight: 700; margin-bottom: 4px; }
+.sum-card .val { font-size: 28px; font-weight: 800; color: var(--navy); }
+.sum-card .unit { font-size: 13px; color: var(--sub); }
+
+/* ビュー */
+.view-area { display: none; }
+.view-area.active { display: block; }
+
+/* テーブル共通 */
+.tbl-wrap { overflow-x: auto; border-radius: var(--r); box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
+table { width: 100%; border-collapse: collapse; background: var(--card); font-size: 14px; }
+th {
+  background: var(--navy); color: #fff;
+  padding: 10px 12px; text-align: left;
+  font-weight: 700; white-space: nowrap;
+}
+td { padding: 9px 12px; border-bottom: 1px solid #eee; vertical-align: top; }
+tr:hover td { background: var(--navy-light); }
+.empty-cell { color: #ccc; }
+
+/* ローダー */
+.loader {
+  text-align: center; padding: 60px 20px;
+  color: var(--sub); font-size: 15px;
+}
+.spinner-lg {
+  display: inline-block; width: 36px; height: 36px;
+  border: 4px solid var(--border); border-top-color: var(--navy);
+  border-radius: 50%; animation: spin 0.8s linear infinite;
+  margin-bottom: 12px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.no-data { text-align: center; padding: 60px; color: #aaa; font-size: 15px; }
+
+/* 役員バッジ */
+.badge {
+  display: inline-block; background: var(--navy-light); color: var(--navy);
+  border-radius: 999px; padding: 2px 8px; font-size: 12px;
+  font-weight: 700; margin: 1px;
+}
+
+/* ===================== 印刷スタイル ===================== */
+@media print {
+  body { background: #fff !important; font-size: 11pt; color: #000; }
+  .top-bar, .toolbar, .summary-row, .btn-print-main,
+  #loginScreen, .view-tabs, .btn-reload { display: none !important; }
+  .main-wrap { padding: 0; max-width: 100%; }
+  .tbl-wrap { box-shadow: none; overflow: visible; }
+  table { font-size: 10pt; page-break-inside: auto; }
+  tr { page-break-inside: avoid; }
+  th { background: #1b3a6b !important; color: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  td { border-bottom: 1px solid #ddd; padding: 6px 8px; }
+  tr:hover td { background: #fff !important; }
+  .view-area { display: block !important; }
+  /* 表示中のビューのみ印刷 */
+  .view-area:not(.active) { display: none !important; }
+  .print-title {
+    display: block !important;
+    font-size: 16pt; font-weight: bold;
+    text-align: center; margin-bottom: 12px;
+    color: #000;
+  }
+  .badge { background: #eee !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+.print-title { display: none; }
+</style>
+</head>
+<body>
+
+<!-- ===== ログイン ===== -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="logo">🏛️</div>
+    <h1>現況届 管理画面</h1>
+    <p>豊田連合町内会<br>自治会担当者専用</p>
+    <input type="password" id="pwInput" placeholder="パスワード"
+      onkeydown="if(event.key==='Enter') doLogin()">
+    <button class="btn-login" onclick="doLogin()">ログイン</button>
+    <div class="login-err" id="loginErr">パスワードが違います</div>
+  </div>
+</div>
+
+<!-- ===== メイン ===== -->
+<div id="mainScreen">
+  <div class="top-bar">
+    <h1>🏛️ 令和8年度 現況届 管理画面</h1>
+    <span class="meta" id="dataCount">読み込み中...</span>
+  </div>
+
+  <div class="toolbar">
+    <div class="view-tabs">
+      <button class="vtab active" onclick="showView('list')">📋 提出一覧</button>
+      <button class="vtab" onclick="showView('meibo')">📄 会長名簿</button>
+      <button class="vtab" onclick="showView('stats')">📊 数値一覧表</button>
+    </div>
+    <button class="btn-reload" onclick="loadData()">🔄 更新</button>
+    <button class="btn-print-main" onclick="window.print()">🖨️ 印刷</button>
+  </div>
+
+  <div class="main-wrap">
+    <div class="summary-row" id="summaryRow"></div>
+
+    <!-- 提出一覧 -->
+    <div class="view-area active" id="viewList">
+      <div class="print-title">令和8年度 自治会町内会現況届 提出一覧</div>
+      <div id="listContent"><div class="loader"><div class="spinner-lg"></div><br>読み込み中...</div></div>
+    </div>
+
+    <!-- 会長名簿 -->
+    <div class="view-area" id="viewMeibo">
+      <div class="print-title">令和8年度 自治会町内会長名簿</div>
+      <div id="meiboContent"><div class="loader"><div class="spinner-lg"></div><br>読み込み中...</div></div>
+    </div>
+
+    <!-- 数値一覧 -->
+    <div class="view-area" id="viewStats">
+      <div class="print-title">令和8年度 自治会町内会 役員数・世帯数・班数・掲示板数 一覧</div>
+      <div id="statsContent"><div class="loader"><div class="spinner-lg"></div><br>読み込み中...</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, collection, getDocs, query, orderBy }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  // ========================================================
+  // 🔧 input.html と同じ Firebase 設定を貼り付けてください
+  // ========================================================
+  const firebaseConfig = {
+    apiKey: "AIzaSyALYKt38-_lon3ns9TEibctRiJ7vovX2A4",
+    authDomain: "genkyo-todoke.firebaseapp.com",
+    projectId: "genkyo-todoke",
+    storageBucket: "genkyo-todoke.firebasestorage.app",
+    messagingSenderId: "767199162038",
+    appId: "1:767199162038:web:f45d2a22881bed121f0017",
+    measurementId: "G-RTN8PLD0KX"
+  };
+  // ========================================================
+
+  const app = initializeApp(firebaseConfig);
+  const db  = getFirestore(app);
+
+  window._db = db;
+  window._getDocs = getDocs;
+  window._query = query;
+  window._collection = collection;
+  window._orderBy = orderBy;
+</script>
+
+<script>
+// ===================== 設定 =====================
+// 管理パスワード（運用前に変更してください）
+const ADMIN_PASSWORD = 'toyoda2026';
+
+// ===================== ログイン =====================
+function doLogin(){
+  const pw = document.getElementById('pwInput').value;
+  if(pw === ADMIN_PASSWORD){
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('mainScreen').style.display  = 'block';
+    loadData();
+  } else {
+    document.getElementById('loginErr').style.display = 'block';
+  }
+}
+
+// ===================== データ =====================
+let allData = [];
+
+async function loadData(){
+  if(!window._db) { alert('Firebase が設定されていません'); return; }
+  try {
+    const snap = await window._getDocs(
+      window._query(window._collection(window._db,'genkyo'), window._orderBy('submittedAt','asc'))
+    );
+    allData = snap.docs.map(d=>({ id: d.id, ...d.data() }));
+    document.getElementById('dataCount').textContent = `提出数：${allData.length}件`;
+    renderSummary();
+    renderList();
+    renderMeibo();
+    renderStats();
+  } catch(e){
+    alert('データ取得に失敗しました: '+e.message);
+  }
+}
+
+function renderSummary(){
+  const total   = allData.length;
+  const setai   = allData.reduce((s,d)=>s+(d.setai||0),0);
+  const han     = allData.reduce((s,d)=>s+(d.han||0),0);
+  const keijiban= allData.reduce((s,d)=>s+(d.keijiban||0),0);
+  const officers= allData.reduce((s,d)=>s+((d.officers||[]).length),0);
+  document.getElementById('summaryRow').innerHTML = [
+    ['提出数',   total,    '件'],
+    ['総世帯数', setai,    '世帯'],
+    ['総班数',   han,      '班'],
+    ['総掲示板数',keijiban,'枚'],
+    ['総役員数', officers, '人'],
+  ].map(([l,v,u])=>`
+    <div class="sum-card">
+      <div class="lbl">${l}</div>
+      <div class="val">${v.toLocaleString()}</div>
+      <div class="unit">${u}</div>
+    </div>`).join('');
+}
+
+// ---- 提出一覧 ----
+function renderList(){
+  if(!allData.length){ document.getElementById('listContent').innerHTML='<div class="no-data">データがありません</div>'; return; }
+  const rows = allData.map((d,i)=>`
+    <tr>
+      <td>${i+1}</td>
+      <td>${d.chonaikai||ec()}</td>
+      <td>${d.president?.name||ec()}</td>
+      <td>${d.president?.tel||ec()}</td>
+      <td>${d.setai!=null?d.setai+'世帯':ec()}</td>
+      <td>${d.han!=null?d.han+'枚':ec()}</td>
+      <td>${d.keijiban!=null?d.keijiban+'枚':ec()}</td>
+      <td>${(d.officers||[]).length}人</td>
+      <td>${fmtTs(d.submittedAt)}</td>
+    </tr>`).join('');
+  document.getElementById('listContent').innerHTML = `
+    <div class="tbl-wrap"><table>
+      <thead><tr>
+        <th>#</th><th>自治会名</th><th>会長名</th><th>TEL</th>
+        <th>世帯数</th><th>班数</th><th>掲示板</th><th>役員数</th><th>提出日時</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>`;
+}
+
+// ---- 会長名簿 ----
+function renderMeibo(){
+  if(!allData.length){ document.getElementById('meiboContent').innerHTML='<div class="no-data">データがありません</div>'; return; }
+  const rows = allData.map((d,i)=>{
+    const p = d.president||{};
+    return `<tr>
+      <td>${i+1}</td>
+      <td>${d.chonaikai||ec()}</td>
+      <td>${p.kana||''}<br><strong>${p.name||ec()}</strong></td>
+      <td>${p.zip?'〒'+p.zip:''}<br>${p.address||ec()}</td>
+      <td>${p.tel||ec()}</td>
+      <td>${p.fax||'　'}</td>
+      <td>${p.mobile||'　'}</td>
+      <td style="font-size:12px">${p.email||'　'}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('meiboContent').innerHTML = `
+    <div class="tbl-wrap"><table>
+      <thead><tr>
+        <th>#</th><th>自治会名</th><th>会長</th><th>住所</th>
+        <th>TEL</th><th>FAX</th><th>携帯</th><th>メール</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>`;
+}
+
+// ---- 数値一覧 ----
+function renderStats(){
+  if(!allData.length){ document.getElementById('statsContent').innerHTML='<div class="no-data">データがありません</div>'; return; }
+  const rows = allData.map((d,i)=>{
+    const offs = (d.officers||[]);
+    const offBadges = offs.map(o=>`<span class="badge">${o.role||'役員'}：${o.name}</span>`).join(' ');
+    return `<tr>
+      <td>${i+1}</td>
+      <td>${d.chonaikai||ec()}</td>
+      <td style="text-align:right">${d.setai!=null?d.setai:ec()}</td>
+      <td style="text-align:right">${d.han!=null?d.han:ec()}</td>
+      <td style="text-align:right">${d.keijiban!=null?d.keijiban:ec()}</td>
+      <td style="text-align:right">${offs.length}</td>
+      <td style="font-size:12px;line-height:1.8">${offBadges||ec()}</td>
+    </tr>`;
+  }).join('');
+  // 合計行
+  const totSetai  = allData.reduce((s,d)=>s+(d.setai||0),0);
+  const totHan    = allData.reduce((s,d)=>s+(d.han||0),0);
+  const totKeiji  = allData.reduce((s,d)=>s+(d.keijiban||0),0);
+  const totOffs   = allData.reduce((s,d)=>s+((d.officers||[]).length),0);
+  document.getElementById('statsContent').innerHTML = `
+    <div class="tbl-wrap"><table>
+      <thead><tr>
+        <th>#</th><th>自治会名</th>
+        <th style="text-align:right">世帯数</th>
+        <th style="text-align:right">班数</th>
+        <th style="text-align:right">掲示板数</th>
+        <th style="text-align:right">役員数</th>
+        <th>役員名（役職：氏名）</th>
+      </tr></thead>
+      <tbody>
+        ${rows}
+        <tr style="font-weight:800;background:#f0ede8;">
+          <td colspan="2" style="text-align:right">合　計</td>
+          <td style="text-align:right">${totSetai.toLocaleString()}</td>
+          <td style="text-align:right">${totHan.toLocaleString()}</td>
+          <td style="text-align:right">${totKeiji.toLocaleString()}</td>
+          <td style="text-align:right">${totOffs.toLocaleString()}</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table></div>`;
+}
+
+function ec(){ return '<span class="empty-cell">—</span>'; }
+function fmtTs(ts){
+  if(!ts) return '—';
+  try{
+    const d = ts.toDate ? ts.toDate() : new Date(ts);
+    return `${d.getMonth()+1}/${d.getDate()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }catch{ return '—'; }
+}
+function pad(n){ return String(n).padStart(2,'0'); }
+
+// ===================== ビュー切替 =====================
+function showView(v){
+  document.querySelectorAll('.view-area').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.vtab').forEach(el=>el.classList.remove('active'));
+  document.getElementById('view'+v.charAt(0).toUpperCase()+v.slice(1)).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

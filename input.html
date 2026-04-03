@@ -272,6 +272,10 @@ input.ok { border-color: var(--green); background: var(--green-light); }
 }
 </style>
 </head>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+  emailjs.init("o3CzdJalruGgdHR9n");
+</script>
 <body>
 
 <div class="hdr">
@@ -651,6 +655,9 @@ async function submitData(){
 
   try {
     const ref = await window._addDoc(window._collection(window._db, 'genkyo'), data);
+    await emailjs.send("service_00iwd0b", "template_gchtvri", {
+      message: "新しい現況届が提出されました。管理画面をご確認ください。"
+    });
     // 完了画面
     document.getElementById('s3').classList.remove('active');
     cur = 4;

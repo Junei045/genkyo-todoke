@@ -655,7 +655,7 @@ async function submitData(){
 
   try {
     const ref = await window._addDoc(window._collection(window._db, 'genkyo'), data);
-    await emailjs.send("service_00iwd0b", "template_gchtvri", {
+    await emailjs.send("service_uqx1a3o", "template_gchtvri", {
       message: "新しい現況届が提出されました。管理画面をご確認ください。"
     });
     // 完了画面

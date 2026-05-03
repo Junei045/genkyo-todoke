@@ -25,8 +25,6 @@ body {
   background: var(--bg); color: var(--text); font-size: 15px;
   min-height: 100vh;
 }
-
-/* ===== ログイン画面 ===== */
 #loginScreen {
   display: flex; align-items: center; justify-content: center;
   min-height: 100vh; padding: 20px;
@@ -53,11 +51,16 @@ body {
   font-size: 16px; font-weight: 800; cursor: pointer;
   font-family: inherit;
 }
+.btn-login:disabled { background: #aaa; cursor: not-allowed; }
 .login-err { color: var(--red); font-size: 13px; margin-top: 8px; display: none; }
-
-/* ===== メイン画面 ===== */
+/* 🔐 ロックアウト警告 */
+.login-warn {
+  background: #fff8e8; border: 1px solid #e8c870;
+  border-radius: 8px; padding: 10px 12px;
+  color: var(--amber); font-size: 13px;
+  margin-top: 10px; display: none;
+}
 #mainScreen { display: none; }
-
 .top-bar {
   background: linear-gradient(135deg, var(--navy), var(--navy-mid));
   color: #fff; padding: 14px 20px;
@@ -66,7 +69,6 @@ body {
 }
 .top-bar h1 { font-size: 16px; font-weight: 800; }
 .top-bar .meta { font-size: 13px; opacity: 0.8; }
-
 .toolbar {
   background: #fff; border-bottom: 2px solid var(--border);
   padding: 12px 16px; display: flex; gap: 10px;
@@ -91,10 +93,7 @@ body {
   cursor: pointer; font-family: inherit;
   box-shadow: 0 2px 8px rgba(42,110,63,0.2);
 }
-
 .main-wrap { max-width: 1100px; margin: 0 auto; padding: 20px 16px; }
-
-/* サマリカード */
 .summary-row {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 12px; margin-bottom: 20px;
@@ -107,12 +106,8 @@ body {
 .sum-card .lbl { font-size: 12px; color: var(--sub); font-weight: 700; margin-bottom: 4px; }
 .sum-card .val { font-size: 28px; font-weight: 800; color: var(--navy); }
 .sum-card .unit { font-size: 13px; color: var(--sub); }
-
-/* ビュー */
 .view-area { display: none; }
 .view-area.active { display: block; }
-
-/* テーブル共通 */
 .tbl-wrap { overflow-x: auto; border-radius: var(--r); box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
 table { width: 100%; border-collapse: collapse; background: var(--card); font-size: 14px; }
 th {
@@ -123,12 +118,7 @@ th {
 td { padding: 9px 12px; border-bottom: 1px solid #eee; vertical-align: top; }
 tr:hover td { background: var(--navy-light); }
 .empty-cell { color: #ccc; }
-
-/* ローダー */
-.loader {
-  text-align: center; padding: 60px 20px;
-  color: var(--sub); font-size: 15px;
-}
+.loader { text-align: center; padding: 60px 20px; color: var(--sub); font-size: 15px; }
 .spinner-lg {
   display: inline-block; width: 36px; height: 36px;
   border: 4px solid var(--border); border-top-color: var(--navy);
@@ -137,15 +127,11 @@ tr:hover td { background: var(--navy-light); }
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 .no-data { text-align: center; padding: 60px; color: #aaa; font-size: 15px; }
-
-/* 役員バッジ */
 .badge {
   display: inline-block; background: var(--navy-light); color: var(--navy);
   border-radius: 999px; padding: 2px 8px; font-size: 12px;
   font-weight: 700; margin: 1px;
 }
-
-/* ===================== 印刷スタイル ===================== */
 @media print {
   body { background: #fff !important; font-size: 11pt; color: #000; }
   .top-bar, .toolbar, .summary-row, .btn-print-main,
@@ -158,19 +144,11 @@ tr:hover td { background: var(--navy-light); }
   td { border-bottom: 1px solid #ddd; padding: 6px 8px; }
   tr:hover td { background: #fff !important; }
   .view-area { display: block !important; }
-  /* 表示中のビューのみ印刷 */
   .view-area:not(.active) { display: none !important; }
-  .print-title {
-    display: block !important;
-    font-size: 16pt; font-weight: bold;
-    text-align: center; margin-bottom: 12px;
-    color: #000;
-  }
+  .print-title { display: block !important; font-size: 16pt; font-weight: bold; text-align: center; margin-bottom: 12px; color: #000; }
   .badge { background: #eee !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
 .print-title { display: none; }
-
-/* ===== 編集モーダル ===== */
 .modal-overlay {
   display: none; position: fixed; inset: 0;
   background: rgba(0,0,0,0.5); z-index: 1000;
@@ -195,10 +173,7 @@ tr:hover td { background: var(--navy-light); }
   display: flex; align-items: center; justify-content: space-between;
 }
 .modal-hdr h2 { font-size: 16px; font-weight: 800; }
-.modal-close {
-  background: none; border: none; color: #fff;
-  font-size: 22px; cursor: pointer; line-height: 1; padding: 0 4px;
-}
+.modal-close { background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; line-height: 1; padding: 0 4px; }
 .modal-body { padding: 20px; max-height: 70vh; overflow-y: auto; }
 .modal-sec {
   font-size: 13px; font-weight: 800; color: var(--navy);
@@ -217,8 +192,6 @@ tr:hover td { background: var(--navy-light); }
 .mf input:focus { outline:none; border-color:var(--navy); background:#fff; }
 .mrow2 { display:grid; grid-template-columns:1fr auto 1fr; gap:8px; align-items:center; }
 .mrow2 .sep { text-align:center; color:var(--sub); }
-
-/* 役員編集 */
 .off-edit-list { display:flex; flex-direction:column; gap:10px; }
 .off-edit-card {
   border:2px solid var(--border); border-radius:10px;
@@ -239,15 +212,8 @@ tr:hover td { background: var(--navy-light); }
   font-size:14px; font-weight:700; cursor:pointer;
   font-family:inherit; margin-top:8px;
 }
-.btn-del-off {
-  float:right; background:none; border:none;
-  color:#aaa; font-size:12px; cursor:pointer; padding:2px;
-}
-
-.modal-ftr {
-  padding: 16px 20px; border-top: 1px solid var(--border);
-  display: flex; gap: 10px;
-}
+.btn-del-off { float:right; background:none; border:none; color:#aaa; font-size:12px; cursor:pointer; padding:2px; }
+.modal-ftr { padding: 16px 20px; border-top: 1px solid var(--border); display: flex; gap: 10px; }
 .btn-cancel {
   flex:1; padding:13px; background:#fff;
   border:2px solid var(--border); border-radius:10px;
@@ -268,14 +234,8 @@ tr:hover td { background: var(--navy-light); }
   font-size:12px; font-weight:700; cursor:pointer; font-family:inherit;
   white-space:nowrap;
 }
-.save-msg {
-  font-size:13px; color:var(--green); font-weight:700;
-  display:none; margin-top:6px; text-align:center;
-}
-.save-err {
-  font-size:13px; color:var(--red); font-weight:700;
-  display:none; margin-top:6px; text-align:center;
-}
+.save-msg { font-size:13px; color:var(--green); font-weight:700; display:none; margin-top:6px; text-align:center; }
+.save-err { font-size:13px; color:var(--red); font-weight:700; display:none; margin-top:6px; text-align:center; }
 </style>
 </head>
 <body>
@@ -288,8 +248,10 @@ tr:hover td { background: var(--navy-light); }
     <p>豊田連合町内会<br>自治会担当者専用</p>
     <input type="password" id="pwInput" placeholder="パスワード"
       onkeydown="if(event.key==='Enter') doLogin()">
-    <button class="btn-login" onclick="doLogin()">ログイン</button>
+    <button class="btn-login" id="loginBtn" onclick="doLogin()">ログイン</button>
     <div class="login-err" id="loginErr">パスワードが違います</div>
+    <!-- 🔐 ロックアウト警告 -->
+    <div class="login-warn" id="loginWarn"></div>
   </div>
 </div>
 
@@ -299,7 +261,6 @@ tr:hover td { background: var(--navy-light); }
     <h1>🏛️ 令和8年度 現況届 管理画面</h1>
     <span class="meta" id="dataCount">読み込み中...</span>
   </div>
-
   <div class="toolbar">
     <div class="view-tabs">
       <button class="vtab active" onclick="showView('list')">📋 提出一覧</button>
@@ -309,23 +270,16 @@ tr:hover td { background: var(--navy-light); }
     <button class="btn-reload" onclick="loadData()">🔄 更新</button>
     <button class="btn-print-main" onclick="window.print()">🖨️ 印刷</button>
   </div>
-
   <div class="main-wrap">
     <div class="summary-row" id="summaryRow"></div>
-
-    <!-- 提出一覧 -->
     <div class="view-area active" id="viewList">
       <div class="print-title">令和8年度 自治会町内会現況届 提出一覧</div>
       <div id="listContent"><div class="loader"><div class="spinner-lg"></div><br>読み込み中...</div></div>
     </div>
-
-    <!-- 会長名簿 -->
     <div class="view-area" id="viewMeibo">
       <div class="print-title">令和8年度 自治会町内会長名簿</div>
       <div id="meiboContent"><div class="loader"><div class="spinner-lg"></div><br>読み込み中...</div></div>
     </div>
-
-    <!-- 数値一覧 -->
     <div class="view-area" id="viewStats">
       <div class="print-title">令和8年度 自治会町内会 役員数・世帯数・班数・掲示板数 一覧</div>
       <div id="statsContent"><div class="loader"><div class="spinner-lg"></div><br>読み込み中...</div></div>
@@ -358,7 +312,6 @@ tr:hover td { background: var(--navy-light); }
       <div class="mf"><label>会館名称</label><input type="text" id="e_hall_n"></div>
       <div class="mf"><label>会館所在地</label><input type="text" id="e_hall_a"></div>
       <div class="mf"><label>会館TEL</label><input type="tel" id="e_hall_t"></div>
-
       <div class="modal-sec">② 会長情報</div>
       <div class="mf"><label>ふりがな</label><input type="text" id="e_p_kana"></div>
       <div class="mf"><label>氏名</label><input type="text" id="e_p_name"></div>
@@ -368,11 +321,9 @@ tr:hover td { background: var(--navy-light); }
       <div class="mf"><label>FAX</label><input type="tel" id="e_p_fax"></div>
       <div class="mf"><label>携帯</label><input type="tel" id="e_p_mob"></div>
       <div class="mf"><label>Eメール</label><input type="email" id="e_p_email"></div>
-
       <div class="modal-sec">役員一覧</div>
       <div class="off-edit-list" id="offEditList"></div>
       <button class="btn-add-off" onclick="addOffEdit()">＋ 役員を追加する</button>
-
       <div class="save-msg" id="saveMsg">✅ 保存しました</div>
       <div class="save-err" id="saveErr"></div>
     </div>
@@ -389,10 +340,6 @@ tr:hover td { background: var(--navy-light); }
   import { getFirestore, collection, getDocs, query, orderBy, doc, setDoc }
     from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  // ========================================================
-  // 🔧 input.html と同じ Firebase 設定を貼り付けてください
-  //For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  // ========================================================
   const firebaseConfig = {
     apiKey: "AIzaSyALYKt38-_lon3ns9TEibctRiJ7vovX2A4",
     authDomain: "genkyo-todoke.firebaseapp.com",
@@ -402,7 +349,6 @@ tr:hover td { background: var(--navy-light); }
     appId: "1:767199162038:web:f45d2a22881bed121f0017",
     measurementId: "G-RTN8PLD0KX"
   };
-  // ========================================================
 
   const app = initializeApp(firebaseConfig);
   const db  = getFirestore(app);
@@ -417,191 +363,204 @@ tr:hover td { background: var(--navy-light); }
 </script>
 
 <script>
-// ===================== 設定 =====================
-// 管理パスワード（運用前に変更してください）
 const ADMIN_PASSWORD = 'toyota2026';
 
-// ===================== ログイン =====================
+// ============================================================
+// 🔐 ブルートフォース対策：ログイン試行回数制限
+// ============================================================
+var _loginAttempts = 0;
+var _loginLockedUntil = 0;
+var MAX_ATTEMPTS = 5;       // 5回失敗でロック
+var LOCK_DURATION = 300000; // 5分間ロック
+
 function doLogin(){
-  const pw = document.getElementById('pwInput').value;
+  var now = Date.now();
+
+  // ロック中チェック
+  if(now < _loginLockedUntil){
+    var remaining = Math.ceil((_loginLockedUntil - now) / 1000);
+    showLoginWarn('ログインがロックされています。' + remaining + '秒後に再試行してください。');
+    return;
+  }
+
+  var pw = document.getElementById('pwInput').value;
   if(pw === ADMIN_PASSWORD){
+    // 成功 → カウントリセット
+    _loginAttempts = 0;
+    _loginLockedUntil = 0;
+    document.getElementById('loginErr').style.display = 'none';
+    document.getElementById('loginWarn').style.display = 'none';
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('mainScreen').style.display  = 'block';
     loadData();
   } else {
-    document.getElementById('loginErr').style.display = 'block';
+    _loginAttempts++;
+    var remaining = MAX_ATTEMPTS - _loginAttempts;
+
+    if(_loginAttempts >= MAX_ATTEMPTS){
+      // ロック
+      _loginLockedUntil = now + LOCK_DURATION;
+      _loginAttempts = 0;
+      document.getElementById('loginErr').style.display = 'none';
+      document.getElementById('loginBtn').disabled = true;
+      showLoginWarn('パスワードを' + MAX_ATTEMPTS + '回間違えました。5分間ログインできません。');
+      document.getElementById('pwInput').value = '';
+      // 5分後に自動解除
+      setTimeout(function(){
+        document.getElementById('loginBtn').disabled = false;
+        document.getElementById('loginWarn').style.display = 'none';
+      }, LOCK_DURATION);
+    } else {
+      document.getElementById('loginErr').style.display = 'block';
+      if(remaining <= 2){
+        showLoginWarn('あと' + remaining + '回失敗するとロックされます。');
+      }
+    }
   }
 }
 
-// ===================== データ =====================
-let allData = [];
+function showLoginWarn(msg){
+  var w = document.getElementById('loginWarn');
+  w.textContent = msg;
+  w.style.display = 'block';
+}
+// ============================================================
+
+var allData = [];
 
 async function loadData(){
-  if(!window._db) { alert('Firebase が設定されていません'); return; }
-  try {
-    const snap = await window._getDocs(
+  if(!window._db){ alert('Firebase が設定されていません'); return; }
+  try{
+    var snap = await window._getDocs(
       window._query(window._collection(window._db,'genkyo'), window._orderBy('submittedAt','asc'))
     );
-    allData = snap.docs.map(d=>({ id: d.id, ...d.data() }));
-    document.getElementById('dataCount').textContent = `提出数：${allData.length}件`;
+    allData = snap.docs.map(function(d){ return Object.assign({id: d.id}, d.data()); });
+    document.getElementById('dataCount').textContent = '提出数：' + allData.length + '件';
     renderSummary();
     renderList();
     renderMeibo();
     renderStats();
-  } catch(e){
-    alert('データ取得に失敗しました: '+e.message);
+  }catch(e){
+    alert('データ取得に失敗しました: ' + e.message);
   }
 }
 
 function renderSummary(){
-  const total   = allData.length;
-  const setai   = allData.reduce((s,d)=>s+(d.setai||0),0);
-  const han     = allData.reduce((s,d)=>s+(d.han||0),0);
-  const keijiban= allData.reduce((s,d)=>s+(d.keijiban||0),0);
-  const officers= allData.reduce((s,d)=>s+((d.officers||[]).length),0);
+  var total    = allData.length;
+  var setai    = allData.reduce(function(s,d){ return s+(d.setai||0); }, 0);
+  var han      = allData.reduce(function(s,d){ return s+(d.han||0); }, 0);
+  var keijiban = allData.reduce(function(s,d){ return s+(d.keijiban||0); }, 0);
+  var officers = allData.reduce(function(s,d){ return s+((d.officers||[]).length); }, 0);
   document.getElementById('summaryRow').innerHTML = [
-    ['提出数',   total,    '件'],
-    ['総世帯数', setai,    '世帯'],
-    ['総班数',   han,      '班'],
-    ['総掲示板数',keijiban,'枚'],
-    ['総役員数', officers, '人'],
-  ].map(([l,v,u])=>`
-    <div class="sum-card">
-      <div class="lbl">${l}</div>
-      <div class="val">${v.toLocaleString()}</div>
-      <div class="unit">${u}</div>
-    </div>`).join('');
+    ['提出数',    total,    '件'],
+    ['総世帯数',  setai,    '世帯'],
+    ['総班数',    han,      '班'],
+    ['総掲示板数',keijiban, '枚'],
+    ['総役員数',  officers, '人'],
+  ].map(function(r){
+    return '<div class="sum-card"><div class="lbl">'+r[0]+'</div><div class="val">'+r[1].toLocaleString()+'</div><div class="unit">'+r[2]+'</div></div>';
+  }).join('');
 }
 
-// ---- 提出一覧 ----
 function renderList(){
   if(!allData.length){ document.getElementById('listContent').innerHTML='<div class="no-data">データがありません</div>'; return; }
-  const rows = allData.map((d,i)=>`
-    <tr>
-      <td>${i+1}</td>
-      <td>${d.chonaikai||ec()}</td>
-      <td>${d.president?.name||ec()}</td>
-      <td>${d.president?.tel||ec()}</td>
-      <td>${d.setai!=null?d.setai+'世帯':ec()}</td>
-      <td>${d.han!=null?d.han+'枚':ec()}</td>
-      <td>${d.keijiban!=null?d.keijiban+'枚':ec()}</td>
-      <td>${(d.officers||[]).length}人</td>
-      <td>${fmtTs(d.submittedAt)}</td>
-      <td><button class="btn-edit-row" onclick="openEdit('${d.id}')">✏️ 編集</button></td>
-    </tr>`).join('');
-  document.getElementById('listContent').innerHTML = `
-    <div class="tbl-wrap"><table>
-      <thead><tr>
-        <th>#</th><th>自治会名</th><th>会長名</th><th>TEL</th>
-        <th>世帯数</th><th>班数</th><th>掲示板</th><th>役員数</th><th>提出日時</th><th>操作</th>
-      </tr></thead>
-      <tbody>${rows}</tbody>
-    </table></div>`;
+  var rows = allData.map(function(d,i){
+    return '<tr>' +
+      '<td>'+(i+1)+'</td>' +
+      '<td>'+(d.chonaikai||ec())+'</td>' +
+      '<td>'+((d.president&&d.president.name)||ec())+'</td>' +
+      '<td>'+((d.president&&d.president.tel)||ec())+'</td>' +
+      '<td>'+(d.setai!=null?d.setai+'世帯':ec())+'</td>' +
+      '<td>'+(d.han!=null?d.han+'枚':ec())+'</td>' +
+      '<td>'+(d.keijiban!=null?d.keijiban+'枚':ec())+'</td>' +
+      '<td>'+((d.officers||[]).length)+'人</td>' +
+      '<td>'+fmtTs(d.submittedAt)+'</td>' +
+      '<td><button class="btn-edit-row" onclick="openEdit(\''+d.id+'\')">✏️ 編集</button></td>' +
+      '</tr>';
+  }).join('');
+  document.getElementById('listContent').innerHTML =
+    '<div class="tbl-wrap"><table>' +
+    '<thead><tr><th>#</th><th>自治会名</th><th>会長名</th><th>TEL</th><th>世帯数</th><th>班数</th><th>掲示板</th><th>役員数</th><th>提出日時</th><th>操作</th></tr></thead>' +
+    '<tbody>' + rows + '</tbody></table></div>';
 }
 
-// ---- 会長名簿 ----
 function renderMeibo(){
   if(!allData.length){ document.getElementById('meiboContent').innerHTML='<div class="no-data">データがありません</div>'; return; }
-  const rows = allData.map((d,i)=>{
-    const p = d.president||{};
-    return `<tr>
-      <td>${i+1}</td>
-      <td>${d.chonaikai||ec()}</td>
-      <td>${p.kana||''}<br><strong>${p.name||ec()}</strong></td>
-      <td>${p.zip?'〒'+p.zip:''}<br>${p.address||ec()}</td>
-      <td>${p.tel||ec()}</td>
-      <td>${p.fax||'　'}</td>
-      <td>${p.mobile||'　'}</td>
-      <td style="font-size:12px">${p.email||'　'}</td>
-    </tr>`;
+  var rows = allData.map(function(d,i){
+    var p = d.president||{};
+    return '<tr>' +
+      '<td>'+(i+1)+'</td><td>'+(d.chonaikai||ec())+'</td>' +
+      '<td>'+(p.kana||'')+'<br><strong>'+(p.name||ec())+'</strong></td>' +
+      '<td>'+(p.zip?'〒'+p.zip:'')+'<br>'+(p.address||ec())+'</td>' +
+      '<td>'+(p.tel||ec())+'</td><td>'+(p.fax||'　')+'</td>' +
+      '<td>'+(p.mobile||'　')+'</td>' +
+      '<td style="font-size:12px">'+(p.email||'　')+'</td>' +
+      '</tr>';
   }).join('');
-  document.getElementById('meiboContent').innerHTML = `
-    <div class="tbl-wrap"><table>
-      <thead><tr>
-        <th>#</th><th>自治会名</th><th>会長</th><th>住所</th>
-        <th>TEL</th><th>FAX</th><th>携帯</th><th>メール</th>
-      </tr></thead>
-      <tbody>${rows}</tbody>
-    </table></div>`;
+  document.getElementById('meiboContent').innerHTML =
+    '<div class="tbl-wrap"><table>' +
+    '<thead><tr><th>#</th><th>自治会名</th><th>会長</th><th>住所</th><th>TEL</th><th>FAX</th><th>携帯</th><th>メール</th></tr></thead>' +
+    '<tbody>' + rows + '</tbody></table></div>';
 }
 
-// ---- 数値一覧 ----
 function renderStats(){
   if(!allData.length){ document.getElementById('statsContent').innerHTML='<div class="no-data">データがありません</div>'; return; }
-  const rows = allData.map((d,i)=>{
-    const offs = (d.officers||[]);
-    const offBadges = offs.map(o=>`<span class="badge">${o.role||'役員'}：${o.name}</span>`).join(' ');
-    return `<tr>
-      <td>${i+1}</td>
-      <td>${d.chonaikai||ec()}</td>
-      <td style="text-align:right">${d.setai!=null?d.setai:ec()}</td>
-      <td style="text-align:right">${d.han!=null?d.han:ec()}</td>
-      <td style="text-align:right">${d.keijiban!=null?d.keijiban:ec()}</td>
-      <td style="text-align:right">${offs.length}</td>
-      <td style="font-size:12px;line-height:1.8">${offBadges||ec()}</td>
-    </tr>`;
+  var rows = allData.map(function(d,i){
+    var offs = d.officers||[];
+    var offBadges = offs.map(function(o){ return '<span class="badge">'+(o.role||'役員')+'：'+o.name+'</span>'; }).join(' ');
+    return '<tr>' +
+      '<td>'+(i+1)+'</td><td>'+(d.chonaikai||ec())+'</td>' +
+      '<td style="text-align:right">'+(d.setai!=null?d.setai:ec())+'</td>' +
+      '<td style="text-align:right">'+(d.han!=null?d.han:ec())+'</td>' +
+      '<td style="text-align:right">'+(d.keijiban!=null?d.keijiban:ec())+'</td>' +
+      '<td style="text-align:right">'+offs.length+'</td>' +
+      '<td style="font-size:12px;line-height:1.8">'+(offBadges||ec())+'</td>' +
+      '</tr>';
   }).join('');
-  // 合計行
-  const totSetai  = allData.reduce((s,d)=>s+(d.setai||0),0);
-  const totHan    = allData.reduce((s,d)=>s+(d.han||0),0);
-  const totKeiji  = allData.reduce((s,d)=>s+(d.keijiban||0),0);
-  const totOffs   = allData.reduce((s,d)=>s+((d.officers||[]).length),0);
-  document.getElementById('statsContent').innerHTML = `
-    <div class="tbl-wrap"><table>
-      <thead><tr>
-        <th>#</th><th>自治会名</th>
-        <th style="text-align:right">世帯数</th>
-        <th style="text-align:right">班数</th>
-        <th style="text-align:right">掲示板数</th>
-        <th style="text-align:right">役員数</th>
-        <th>役員名（役職：氏名）</th>
-      </tr></thead>
-      <tbody>
-        ${rows}
-        <tr style="font-weight:800;background:#f0ede8;">
-          <td colspan="2" style="text-align:right">合　計</td>
-          <td style="text-align:right">${totSetai.toLocaleString()}</td>
-          <td style="text-align:right">${totHan.toLocaleString()}</td>
-          <td style="text-align:right">${totKeiji.toLocaleString()}</td>
-          <td style="text-align:right">${totOffs.toLocaleString()}</td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table></div>`;
+  var totSetai  = allData.reduce(function(s,d){ return s+(d.setai||0); }, 0);
+  var totHan    = allData.reduce(function(s,d){ return s+(d.han||0); }, 0);
+  var totKeiji  = allData.reduce(function(s,d){ return s+(d.keijiban||0); }, 0);
+  var totOffs   = allData.reduce(function(s,d){ return s+((d.officers||[]).length); }, 0);
+  document.getElementById('statsContent').innerHTML =
+    '<div class="tbl-wrap"><table>' +
+    '<thead><tr><th>#</th><th>自治会名</th><th style="text-align:right">世帯数</th><th style="text-align:right">班数</th><th style="text-align:right">掲示板数</th><th style="text-align:right">役員数</th><th>役員名（役職：氏名）</th></tr></thead>' +
+    '<tbody>' + rows +
+    '<tr style="font-weight:800;background:#f0ede8;"><td colspan="2" style="text-align:right">合　計</td>' +
+    '<td style="text-align:right">'+totSetai.toLocaleString()+'</td>' +
+    '<td style="text-align:right">'+totHan.toLocaleString()+'</td>' +
+    '<td style="text-align:right">'+totKeiji.toLocaleString()+'</td>' +
+    '<td style="text-align:right">'+totOffs.toLocaleString()+'</td><td></td></tr>' +
+    '</tbody></table></div>';
 }
 
 function ec(){ return '<span class="empty-cell">—</span>'; }
 function fmtTs(ts){
   if(!ts) return '—';
   try{
-    const d = ts.toDate ? ts.toDate() : new Date(ts);
-    return `${d.getMonth()+1}/${d.getDate()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
-  }catch{ return '—'; }
+    var d = ts.toDate ? ts.toDate() : new Date(ts);
+    return (d.getMonth()+1)+'/'+d.getDate()+' '+pad(d.getHours())+':'+pad(d.getMinutes());
+  }catch(e){ return '—'; }
 }
 function pad(n){ return String(n).padStart(2,'0'); }
 
-// ===================== ビュー切替 =====================
 function showView(v){
-  document.querySelectorAll('.view-area').forEach(el=>el.classList.remove('active'));
-  document.querySelectorAll('.vtab').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.view-area').forEach(function(el){ el.classList.remove('active'); });
+  document.querySelectorAll('.vtab').forEach(function(el){ el.classList.remove('active'); });
   document.getElementById('view'+v.charAt(0).toUpperCase()+v.slice(1)).classList.add('active');
   event.target.classList.add('active');
 }
 
-// ===================== 編集モーダル =====================
-let editingId = null;
-let offEditCnt = 0;
+var editingId = null;
+var offEditCnt = 0;
 
-function gev(id){ return (document.getElementById(id)||{}).value?.trim()||''; }
-function sev(id, val){ const el=document.getElementById(id); if(el) el.value=val||''; }
+function gev(id){ var el=document.getElementById(id); return el ? (el.value||'').trim() : ''; }
+function sev(id, val){ var el=document.getElementById(id); if(el) el.value=val||''; }
 
 function openEdit(docId){
-  const d = allData.find(x=>x.id===docId);
+  var d = allData.find(function(x){ return x.id===docId; });
   if(!d) return;
   editingId = docId;
   offEditCnt = 0;
-
-  // 基本情報
   sev('e_chonaikai', d.chonaikai);
   sev('e_term_s',    d.term_start);
   sev('e_term_e',    d.term_end);
@@ -613,9 +572,7 @@ function openEdit(docId){
   sev('e_hall_n',    d.hall_name);
   sev('e_hall_a',    d.hall_addr);
   sev('e_hall_t',    d.hall_tel);
-
-  // 会長
-  const p = d.president||{};
+  var p = d.president||{};
   sev('e_p_kana',  p.kana);
   sev('e_p_name',  p.name);
   sev('e_p_zip',   p.zip);
@@ -624,12 +581,8 @@ function openEdit(docId){
   sev('e_p_fax',   p.fax);
   sev('e_p_mob',   p.mobile);
   sev('e_p_email', p.email);
-
-  // 役員
   document.getElementById('offEditList').innerHTML = '';
-  (d.officers||[]).forEach(o => addOffEdit(o));
-
-  // リセット
+  (d.officers||[]).forEach(function(o){ addOffEdit(o); });
   document.getElementById('saveMsg').style.display = 'none';
   document.getElementById('saveErr').style.display = 'none';
   document.getElementById('saveBtn').disabled = false;
@@ -643,51 +596,42 @@ function closeModal(){
 
 function addOffEdit(data){
   offEditCnt++;
-  const n = offEditCnt;
-  const d = data||{};
-  const div = document.createElement('div');
+  var n = offEditCnt;
+  var d = data||{};
+  var div = document.createElement('div');
   div.className = 'off-edit-card';
   div.id = 'oec'+n;
-  div.innerHTML = `
-    <span class="off-no">役員 ${n}</span>
-    <button class="btn-del-off" onclick="document.getElementById('oec${n}').remove()">✕ 削除</button>
-    <br style="clear:both">
-    <input type="text"  id="er${n}" placeholder="役職" value="${d.role||''}" style="margin-top:10px">
-    <input type="text"  id="ek${n}" placeholder="ふりがな" value="${d.kana||''}">
-    <input type="text"  id="en${n}" placeholder="氏名" value="${d.name||''}">
-    <input type="tel"   id="et${n}" placeholder="電話番号" value="${d.tel||''}">
-    <input type="email" id="ee${n}" placeholder="Eメール" value="${d.email||''}">
-  `;
+  div.innerHTML =
+    '<span class="off-no">役員 ' + n + '</span>' +
+    '<button class="btn-del-off" onclick="document.getElementById(\'oec'+n+'\').remove()">✕ 削除</button>' +
+    '<br style="clear:both">' +
+    '<input type="text"  id="er'+n+'" placeholder="役職" value="'+(d.role||'')+'" style="margin-top:10px">' +
+    '<input type="text"  id="ek'+n+'" placeholder="ふりがな" value="'+(d.kana||'')+'">' +
+    '<input type="text"  id="en'+n+'" placeholder="氏名" value="'+(d.name||'')+'">' +
+    '<input type="tel"   id="et'+n+'" placeholder="電話番号" value="'+(d.tel||'')+'">' +
+    '<input type="email" id="ee'+n+'" placeholder="Eメール" value="'+(d.email||'')+'">';
   document.getElementById('offEditList').appendChild(div);
 }
 
 async function saveEdit(){
   if(!editingId) return;
-  const btn = document.getElementById('saveBtn');
-  const msg = document.getElementById('saveMsg');
-  const err = document.getElementById('saveErr');
+  var btn = document.getElementById('saveBtn');
+  var msg = document.getElementById('saveMsg');
+  var err = document.getElementById('saveErr');
   msg.style.display = 'none';
   err.style.display = 'none';
   btn.disabled = true;
   btn.textContent = '保存中...';
 
-  // 役員収集
-  const officers = [];
-  document.querySelectorAll('.off-edit-card').forEach(c=>{
-    const id = c.id.replace('oec','');
-    const nm = gev('en'+id); if(!nm) return;
-    officers.push({
-      role:  gev('er'+id),
-      kana:  gev('ek'+id),
-      name:  nm,
-      tel:   gev('et'+id),
-      email: gev('ee'+id),
-    });
+  var officers = [];
+  document.querySelectorAll('.off-edit-card').forEach(function(c){
+    var id = c.id.replace('oec','');
+    var nm = gev('en'+id); if(!nm) return;
+    officers.push({ role: gev('er'+id), kana: gev('ek'+id), name: nm, tel: gev('et'+id), email: gev('ee'+id) });
   });
 
-  const orig = allData.find(x=>x.id===editingId);
-  const updated = {
-    ...orig,
+  var orig = allData.find(function(x){ return x.id===editingId; });
+  var updated = Object.assign({}, orig, {
     chonaikai:   gev('e_chonaikai'),
     term_start:  gev('e_term_s'),
     term_end:    gev('e_term_e'),
@@ -709,23 +653,22 @@ async function saveEdit(){
       mobile:  gev('e_p_mob'),
       email:   gev('e_p_email'),
     },
-    officers,
+    officers: officers,
     updatedAt: new Date().toISOString(),
-  };
-  // idフィールドは保存しない
-  const { id: _id, ...saveData } = updated;
+  });
+  var saveData = Object.assign({}, updated);
+  delete saveData.id;
 
-  try {
-    await window._setDoc(window._doc(window._db, 'genkyo', editingId), saveData);
-    // ローカルデータも更新
-    const idx = allData.findIndex(x=>x.id===editingId);
-    if(idx>=0) allData[idx] = { id: editingId, ...saveData };
+  try{
+    await window._setDoc(window._doc(window._db,'genkyo',editingId), saveData);
+    var idx = allData.findIndex(function(x){ return x.id===editingId; });
+    if(idx>=0) allData[idx] = Object.assign({id: editingId}, saveData);
     renderSummary(); renderList(); renderMeibo(); renderStats();
     msg.style.display = 'block';
     btn.textContent = '💾 保存する';
     btn.disabled = false;
-    setTimeout(()=>closeModal(), 1200);
-  } catch(e) {
+    setTimeout(function(){ closeModal(); }, 1200);
+  }catch(e){
     err.textContent = '保存に失敗しました: ' + e.message;
     err.style.display = 'block';
     btn.textContent = '💾 保存する';
